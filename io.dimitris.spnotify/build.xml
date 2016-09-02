@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ButtonDemo" default="default" basedir=".">
+
+	<taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="lib/appbundler-1.0.jar" />
+
+	<target name="default">
+
+		<jar destfile="dist/io.dimitris.spnotify.jar">
+			<fileset dir="bin"/>
+		</jar>
+		
+		<delete file="dist/Spnotify.dmg"/>
+		<delete dir="dist/Spnotify.app"/>
+
+		<bundleapp outputdirectory="dist" name="Spnotify" displayname="Spnotify" identifier="Spnotify" mainclassname="io.dimitris.spnotify.Spnotify" icon="resources/spnotify.icns">
+			<classpath file="dist/io.dimitris.spnotify.jar"/>
+			<!--option value="-Dapple.laf.useScreenMenuBar=true"/-->
+			<option value="-Duser.dir=$APP_ROOT/Contents/Home/"/>
+			<!--option value="-Dapple.awt.UIElement=true"/-->
+		</bundleapp>
+
+		<copydir src="resources" dest="dist/Spnotify.app/Contents/Home/resources"/>
+		
+		<exec executable="hdiutil">
+			<arg line="create -srcfolder dist/Spnotify.app dist/Spnotify.dmg"/>
+		</exec>
+		
+		
+	</target>
+
+</project>
